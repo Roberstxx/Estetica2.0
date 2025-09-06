@@ -14,6 +14,16 @@ const ServiceCard = ({ service, onReservar, onVerDetalle }: ServiceCardProps) =>
     window.open(`https://wa.me/5551234567?text=${encodeURIComponent(message)}`, '_blank');
   };
 
+  // Usa rutas públicas: /public/img/services/*
+  // Si en tus datos ya viene una URL absoluta o una ruta que empieza con "/", la respetamos.
+  const resolveImgSrc = (name: string) => {
+    if (!name) return '/img/services/placeholder.jpg';
+    if (name.startsWith('http') || name.startsWith('/')) return name;
+    return `/img/services/${name}`;
+  };
+
+  const imgSrc = resolveImgSrc(service.imagenes?.[0] ?? '');
+
   return (
     <div
       className="beauty-card group cursor-pointer h-full flex flex-col"
@@ -22,9 +32,13 @@ const ServiceCard = ({ service, onReservar, onVerDetalle }: ServiceCardProps) =>
       {/* Imagen con altura fija */}
       <div className="relative overflow-hidden rounded-lg mb-4">
         <img
-          src={`/src/assets/${service.imagenes[0]}`}
+          src={imgSrc}
           alt={service.titulo}
+          loading="lazy"
           className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+          onError={(e) => {
+            (e.currentTarget as HTMLImageElement).src = '/img/services/placeholder.jpg';
+          }}
         />
         <div className="absolute top-3 left-3">
           <span className="beauty-badge beauty-badge--category">
@@ -97,3 +111,4 @@ const ServiceCard = ({ service, onReservar, onVerDetalle }: ServiceCardProps) =>
 };
 
 export default ServiceCard;
+
