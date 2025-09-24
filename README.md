@@ -110,4 +110,5 @@ The design follows modern web standards with:
 
 ---
 
-Built with ❤️ by Lovable for Estética Bella
+
+Built with ❤️ 
